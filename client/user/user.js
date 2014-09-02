@@ -1,131 +1,110 @@
 angular.module('app', ['ngRoute'])
 .controller('UserController', ['$scope','$http', function($scope,$http) {
 	$scope.search = {'username': ''};
-	$scope.stats = [];
+	$scope.stats = [{"date":"2014-08-22","count":1},{"date":"2014-08-23","count":2},{"date":"2014-08-26","count":1}]
 	$scope.submitUsername = function(data) {
 		$http({'method': 'POST', 'url': '/api/user/commitcounts', 'data': data})
 		.then(function(res) {
 			$scope.stats = res.data.results;
 		});
 	};
-}]);
+}])
 
-/*
+.directive('linearChart', function($window){
+   return{
+      restrict:'EA',
+      template:"<svg width='850' height='200'></svg>",
+       link: function(scope, elem, attrs){
+           var salesDataToPlot=scope.stats;
 
-d3.json("data.json",function(data){
-		var width = 1000;
-	    var height =480;
-	    var canvas = d3.select("body").append("svg")
-		              .attr('width',width)
-		              .attr('height',height)
-		              .append('g')
-		              .attr('transform','translate(150,-30)')
+          console.log("this is the scope",salesDataToPlot)
+           var padding = 20;
+           var pathClass="path";
+           var xScale, yScale, xAxisGen, yAxisGen
 
-		canvas.append('text')
-		        .attr("x", (width / 2))
-		        .attr("y", 150)
-		        .attr("text-anchor", "middle")
-		        .style("font-size", "30px")
-		        .style("text-decoration", "underline")
-		        .text("Users Commit Data");
+           var d3 = $window.d3;
 
+           var rawSvg=elem.find('svg');
+           var svg = d3.select(rawSvg[0]);
+          // console.log("rawSVG",rawSvg[0])
 
-	           canvas.selectAll('rect')
-	              .data(data)
-	              .enter()
-	                 .append('rect')
-	                 .attr('height',function(d){return ((d.population/2.6)*0.365)*0.584/10000 })
-	                 .attr('width',30)
-	                 .attr('y',function(d){ return height-((d.population/2.6)*0.365)*0.584/10000 })
-	                 .attr("x",function(d,i){return i*100 })
-	                 .attr('fill','blue')
+           //setting up the axis and labeling it
 
-	            canvas.selectAll('text')
-	                 .data(data)
-	                 .enter()
-	                 .append('text')
-	                 .text(function(d){return Math.floor(((d.population/2.6)*0.365)*0.584)})
-	                 .attr('x',function(d,i){
-	                 	return i * (width/data.length)
-	                 })
-	                 .attr('y',function(d){
-	                 	return height - (((d.population/2.6)*0.365)*0.584/10000)*1.05
-	                 })
+           function setChartParameters(){
 
-	        var x = d3.scale.linear()
-	           .range([0,width/1.084])
-	           .domain([0,data.length-1]);
+               xScale = d3.scale.linear()
+                   .domain([0, salesDataToPlot.length-1])
+                   .range([padding + 5, rawSvg.attr("width") - padding]);
 
-	        var xAxis = d3.svg.axis()
-	            .scale(x)
-	            .tickFormat(function(d) { return data[d].county })
-	            .orient("bottom");
+               yScale = d3.scale.linear()
+                   .domain([0, d3.max(salesDataToPlot, function (d) {
 
-	         canvas.append('g')
-                .attr('transform','translate(0,' + height + ')')
-	            .call(xAxis)
+                       return d.count;
+                   })])
+                   .range([rawSvg.attr("height") - padding, 0]);
+
+               xAxisGen = d3.svg.axis()
+                   .scale(xScale)
+                   .tickFormat(function(d,i) { return salesDataToPlot[d].date})
+                   .orient("bottom")
+                   .ticks(salesDataToPlot.length - 1);
+
+                   console.log("xscale",xAxisGen)
 
 
-})
-*/
-=======
-angular.module('githubscout.user', [])
+               yAxisGen = d3.svg.axis()
+                   .scale(yScale)
+                   .orient("left")
+                   .ticks(4)
+            
 
-.controller('UserController', function ($scope) {
-	// d3.json("data.json",function(data){
-	// 	var width = 1000;
-	//     var height =480;
-	//     var canvas = d3.select("body").append("svg")
-	// 	              .attr('width',width)
-	// 	              .attr('height',height)
-	// 	              .append('g')
-	// 	              .attr('transform','translate(150,-30)')
-
-	// 	canvas.append('text')
-	// 	        .attr("x", (width / 2))
-	// 	        .attr("y", 150)
-	// 	        .attr("text-anchor", "middle")
-	// 	        .style("font-size", "30px")
-	// 	        .style("text-decoration", "underline")
-	// 	        .text("Users Commit Data");
+               // lineFun = d3.svg.line()
+               //     .x(function (d) {
+               //         return xScale(d.hour);
+               //     })
+               //     .y(function (d) {
+               //         return yScale(d.sales);
+               //     })
+               //     .interpolate("basis");
+           }
+         
+         function drawLineChart() {
 
 
-	//            canvas.selectAll('rect')
-	//               .data(data)
-	//               .enter()
-	//                  .append('rect')
-	//                  .attr('height',function(d){return ((d.population/2.6)*0.365)*0.584/10000 })
-	//                  .attr('width',30)
-	//                  .attr('y',function(d){ return height-((d.population/2.6)*0.365)*0.584/10000 })
-	//                  .attr("x",function(d,i){return i*100 })
-	//                  .attr('fill','blue')
+               setChartParameters();
 
-	//             canvas.selectAll('text')
-	//                  .data(data)
-	//                  .enter()
-	//                  .append('text')
-	//                  .text(function(d){return Math.floor(((d.population/2.6)*0.365)*0.584)})
-	//                  .attr('x',function(d,i){
-	//                  	return i * (width/data.length)
-	//                  })
-	//                  .attr('y',function(d){
-	//                  	return height - (((d.population/2.6)*0.365)*0.584/10000)*1.05
-	//                  })
-
-	//         var x = d3.scale.linear()
-	//            .range([0,width/1.084])
-	//            .domain([0,data.length-1]);
-
-	//         var xAxis = d3.svg.axis()
-	//             .scale(x)
-	//             .tickFormat(function(d) { return data[d].county })
-	//             .orient("bottom");
-
-	//          canvas.append('g')
- //                .attr('transform','translate(0,' + height + ')')
-	//             .call(xAxis)
+               svg.append("svg:g")
+                   .attr("class", "x axis")
+                   .attr("transform", "translate(15,180)")
+                   .call(xAxisGen);
 
 
-	// })
+               svg.append("svg:g")
+                   .attr("class", "y axis")
+                   .attr("transform", "translate(30,0)")
+                   .call(yAxisGen);
+
+                 
+
+               svg.selectAll('bar')
+                  .data(salesDataToPlot)
+                  .enter()
+                  .append('rect')
+                  .attr("x",function(d,i){return (0.9*i*rawSvg.attr("width"))/(salesDataToPlot.length - 1)})
+                  .attr('y', 200)
+                  .attr('width',20)
+                  .attr('height',0)
+                  .attr("transform", "translate(30,-20)")
+                  .attr('fill','steelblue')
+                  .transition()
+                  .delay(function(d, i) { return i * 100; })
+                  .duration(500)
+                  .attr('y',function(d){ return rawSvg.attr("height")-d.count*20})
+                  .attr('height',function(d,i){return d.count*20 })
+                 
+           }
+
+           drawLineChart();
+       }
+   };
 });
-

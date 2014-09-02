@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html ng-app="githubscout">
+<html ng-app="app">
   <head>
     <meta charset="utf-8" />
     <title>Github Scout</title>
@@ -10,7 +10,7 @@
   		<a ui-sref="home">Home</a>
   	</div>
 
-    <div ng-controller='SearchController'>
+    <div ng-controller='UserController'>
       <form ng-submit='submitUsername(search)'>
       <input type='submit' placeholder='search for a user' >
       <input type ='text' ng-model='search.username'>
@@ -20,11 +20,14 @@
       <input type ='text' value = 'enter language'/>
     </form>
     {{stats}}
-    <script src = "./users/users.js"></script>
+    <!-- // <script src = "./users/users.js"></script> -->
     <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
     <script src="lib/angular/angular.js"></script>
     <script src="lib/angular-route/angular-route.js"></script>
+    <h1>GitHub User {{search}} Commits Over Time</h1>
+    <div linear-chart chart-data="salesData"></div>
     </div>
+
 
     <div ui-view></div>
 
@@ -35,12 +38,12 @@
     </footer>
 
   	<script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-  	<script src="lib/angular/lib/angular.js"></script>
+  	<!-- // <script src="lib/angular/lib/angular.js"></script> -->
   	<script src="lib/angular-ui-router/release/angular-ui-router.js"></script>
-    <script src="home/home.js"></script>
-    <script src="language/language.js"></script>
+    <!-- // <script src="home/home.js"></script> -->
+    <!-- // <script src="language/language.js"></script> -->
     <script src="user/user.js"></script>
-  	<script src="client.js"></script>
+  	<!-- // <script src="client.js"></script> -->
   </body>
  </html>
 
