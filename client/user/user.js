@@ -1,7 +1,7 @@
-angular.module('app', ['ngRoute'])
+angular.module('app.user', ['ngRoute'])
 .controller('UserController', ['$scope','$http', function($scope,$http) {
 	$scope.search = {'username': ''};
-	$scope.stats = [{"date":"2014-08-22","count":1},{"date":"2014-08-23","count":2},{"date":"2014-08-26","count":1}]
+	$scope.stats = []
 	$scope.submitUsername = function(data) {
 		$http({'method': 'POST', 'url': '/api/user/commitcounts', 'data': data})
 		.then(function(res) {
@@ -83,8 +83,6 @@ angular.module('app', ['ngRoute'])
                    .attr("class", "y axis")
                    .attr("transform", "translate(30,0)")
                    .call(yAxisGen);
-
-                 
 
                svg.selectAll('bar')
                   .data(salesDataToPlot)

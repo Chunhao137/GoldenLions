@@ -19,6 +19,7 @@ app.use(express.static(__dirname + '/client'));
 //   console.log('GET /');
 // });
 
+
 app.post('/api/user/commitcounts',function(req,res) {
   console.log('POST /api/user/commitcounts');
   handler.getUserCommitCountsByDate(req,res);
