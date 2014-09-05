@@ -1,10 +1,14 @@
 var userapp = angular.module('githubscout.user', ['ui.router','nvd3ChartDirectives'])
+<<<<<<< HEAD
 
+=======
+>>>>>>> 6a0613c82cf4a585e264fce75e92b563c21d5b63
 
-userapp.controller('UserController', ['$scope', 'UserData', 'getUserCommits', function($scope, UserData) {
+userapp.controller('UserController', ['$scope', 'UserData', 'UserDateandCommits','UserLanguagesandCommits',function($scope, UserData,UserDateandCommits,UserLanguagesandCommits) {
   $scope.userdata =[];
   $scope.userdata.data = UserData.rawDataCommitsByLanguage
 
+<<<<<<< HEAD
 
 
 
@@ -44,8 +48,13 @@ userapp.controller('UserController', ['$scope', 'UserData', 'getUserCommits', fu
                commit[key]=1
              }
          }
+=======
+  $scope.getdateandCommits = function(){
+>>>>>>> 6a0613c82cf4a585e264fce75e92b563c21d5b63
 
+     return  UserDateandCommits.getdateandCommits($scope.userdata.data)
       }
+<<<<<<< HEAD
       for(var key in commit){
          result.push({language:key,count:commit[key]})
       }
@@ -147,140 +156,40 @@ userapp.directive('usercommitChart', function($window){
 
                  function drawLineChart() {
 
+=======
+>>>>>>> 6a0613c82cf4a585e264fce75e92b563c21d5b63
 
-                   setChartParameters();
+  $scope.getUserCommitsperLanganguage = function(){
 
-                   svg.append("svg:g")
-                   .attr("class", "x axis")
-                   .attr("transform", "translate(10,380)")
-                   .call(xAxisGen)
-                   .selectAll("text")
-                   .style("text-anchor", "end")
-                   .attr("dx", "-.8em")
-                   .attr("dy", ".15em")
-                   .attr("transform", function(d) {
-                     return "rotate(-65)"
-                   });
+    return UserLanguagesandCommits.getUserCommitsperLanganguage($scope.userdata.data)
 
+     }
 
-                   svg.append("svg:g")
-                   .attr("class", "y axis")
-                   .attr("transform", "translate(40,0)")
-                   .call(yAxisGen);
+    $scope.userDateandCommits=$scope.getdateandCommits().reverse()
+    $scope.commitsperLangugageData = $scope.getUserCommitsperLanganguage()
 
-               svg.selectAll('bar')
-                  .data(dataPlot)
-                  .enter()
-                  .append('rect')
-                  .attr("x",function(d,i){return (0.94*i*rawSvg.attr("width"))/(dataPlot.length - 1)})
-                  .attr('width',20)
-                  .attr('height',0)
-                  .attr("transform", "translate(40,0)")
-                  .attr('fill','steelblue')
-                  .transition()
-                  .delay(function(d, i) { return i * 100; })
-                  .duration(500)
-                  .attr('y',function(d){ return yScale(d.count)})
-                  .attr('height',function(d,i){return 380-yScale(d.count) })
-
-           }
-
-           drawLineChart();
-       }
-   };
-})
-
-//creating the d3 directive commites for languages for specific user
-userapp.directive('userlangaugeChart', function($window){
-   return{
-      restrict:'EA',
-      template:"<svg width='1200' height='600'></svg>",
-       link: function(scope, elem, attrs){
-
-          console.log('user, userlangaugeChart')
-           var dataPlot=scope.userCommitsperLanguage
-
-          //console.log("this is the scope",dataPlot)
-           var padding = 20;
-           var pathClass="path";
-           var xScale, yScale, xAxisGen, yAxisGen
-
-           var d3 = $window.d3;
-           //console.log("window",$window)
-
-           var rawSvg=elem.find('svg');
-           var svg = d3.select(rawSvg[0]);
-          // console.log("rawSVG",rawSvg[0])
-
-           //setting up the axis and labeling it
-
-           function setChartParameters(){
-
-             xScale = d3.scale.linear()
-             .domain([0, dataPlot.length-1])
-             .range([padding + 5, rawSvg.attr("width") - padding]);
-
-             yScale = d3.scale.linear()
-             .domain([0, d3.max(dataPlot, function (d) {
-
-               return parseInt(d.count);
-             })])
-             .range([400 - padding, 0]);
-
-             xAxisGen = d3.svg.axis()
-             .scale(xScale)
-             .tickFormat(function(d,i) { return dataPlot[d].language})
-             .orient("bottom")
-             .ticks(dataPlot.length - 1);
-
-                   yAxisGen = d3.svg.axis()
-                   .scale(yScale)
-                   .orient("left")
-                   .ticks(5)
-
+   //Data for bar chart.
+   $scope.commitsbyDateData = [
+                 {
+                     key: "Series 1",
+                     values: $scope.userDateandCommits
                  }
+               
+             ];
 
-                 function drawLineChart() {
+  //Function that allows nvd3 and d3 to access x values from the ‘data’. 
+  $scope.xFunction = function() {
+    return function(d) {
+      return d.language;
+    };
+  }
+  //Function that allows nvd3 and d3 to access y values from the ‘data’.
+  $scope.yFunction = function() {
+    return function(d) {
+      return d.count;
+    };
+  }
+}])
 
+ 
 
-                   setChartParameters();
-
-                   svg.append("svg:g")
-                   .attr("class", "x axis")
-                   .attr("transform", "translate(10,380)")
-                   .call(xAxisGen)
-                   .selectAll("text")
-                   .style("text-anchor", "end")
-                   .attr("dx", "-.8em")
-                   .attr("dy", ".15em")
-                   .attr("transform", function(d) {
-                     return "rotate(-65)"
-                   });
-
-
-                   svg.append("svg:g")
-                   .attr("class", "y axis")
-                   .attr("transform", "translate(40,0)")
-                   .call(yAxisGen);
-
-               svg.selectAll('bar')
-                  .data(dataPlot)
-                  .enter()
-                  .append('rect')
-                  .attr("x",function(d,i){return (0.94*i*rawSvg.attr("width"))/(dataPlot.length - 1)})
-                  .attr('width',20)
-                  .attr('height',0)
-                  .attr("transform", "translate(40,0)")
-                  .attr('fill','steelblue')
-                  .transition()
-                  .delay(function(d, i) { return i * 100; })
-                  .duration(500)
-                  .attr('y',function(d){ return yScale(d.count)})
-                  .attr('height',function(d,i){return 380-yScale(d.count) })
-
-           }
-
-           drawLineChart();
-       }
-   };
-})
