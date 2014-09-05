@@ -1,16 +1,14 @@
-<div>
-
-  <!--    ({{userdata.data}}
- -->
-
+<div ng-controller="UserController">
   <h1>User View</h1>
   <form ng-submit='submitUsername(search)'>
     <!-- <input type='submit' value='search users' > -->
- 
+    <input name='search' class='search' placeholder='search for a user' ng-model='search.username'>
+    ({{userdata.data}}
      <h1>GitHub User {{search.username}} Commits Over Time</h1>
     <div usercommit-chart chart-data="UsercommitData"></div>
     <h1>GitHub User {{search.username}} Commits By Langauges</h1>
      <div userlangauge-chart chart-data="UsercommitData"></div>
+<<<<<<< HEAD
      
    <nvd3-pie-chart
     	data="exampleData"
@@ -21,6 +19,8 @@
         y="yFunction()">
         	<svg height="250"></svg>
     </nvd3-pie-chart>
+=======
+>>>>>>> ceeefb35e34ef119560087658f0dd72ef6ada445
 </div>
 
 
