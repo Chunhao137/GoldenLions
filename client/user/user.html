@@ -1,27 +1,7 @@
-<<<<<<< HEAD
-<div ng-controller="UserController">
-  <h1>User View</h1>
-  <form ng-submit='submitUsername(search)'>
-    <!-- <input type='submit' value='search users' > -->
-    <input name='search' class='search' placeholder='search for a user' ng-model='search.username'>
-    ({{userdata.data}}
-=======
 <div>
-
  <button ng-click=" newDiv(); compareUser()">Compare User </button>
   <h1>User View</h1>
-<<<<<<< HEAD
-<<<<<<< HEAD
-  <form ng-submit='submitUsername(search)'>
-   
- 
->>>>>>> 6a0613c82cf4a585e264fce75e92b563c21d5b63
-=======
->>>>>>> 8a34e2cbf9e449bc3ecafa2bc44bf887bb4485cb
-     <h1>GitHub User {{search.username}} Commits Over Time</h1>
-=======
      <h1>GitHub User Commits Over Time</h1>
->>>>>>> 04513daca2fa2931496d700989ec6460859afbf0
     <nvd3-multi-bar-chart
                data="commitsbyDateData"
                id="barchart1"
@@ -66,30 +46,4 @@
       <svg ></svg>
     </nvd3-pie-chart>
 
-
-
-  <!--    ({{userdata.data}}
- -->
-
-  <h1>User View</h1>
-  <form ng-submit='submitUsername(search)'>
-    <!-- <input type='submit' value='search users' > -->
- 
-     <h1>GitHub User {{search.username}} Commits Over Time</h1>
-    <div usercommit-chart chart-data="UsercommitData"></div>
-    <h1>GitHub User {{search.username}} Commits By Langauges</h1>
-     <div userlangauge-chart chart-data="UsercommitData"></div>
-     
-   <nvd3-pie-chart
-    	data="exampleData"
-        id="yExample"
-        width="550"
-        height="350"
-        x="xFunction()"
-        y="yFunction()">
-        	<svg height="250"></svg>
-    </nvd3-pie-chart>
-
 </div>
-
-
