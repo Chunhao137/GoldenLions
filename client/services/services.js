@@ -17,7 +17,7 @@ angular.module('githubscout.services', [])
   return {}
 })
  // getdateandCommits will return an array of object with
- //object having the form ['2014-04-01',5],['2014-06-02',8]]
+ //object having the form [['2014/06',5],['2014/08',8]]
 .factory('UserDateandCommits',function(){
 	var getdateandCommits  = function(obj){
     var result = []
@@ -35,17 +35,16 @@ angular.module('githubscout.services', [])
       }
     }
     for(var key in commit){
-    	var dt  = new Date(key)
-    	var year = dt.getFullYear()
-    	var month = dt.getMonth() + 1
-    	var seconds = year + "/" + month
+    	var dt  = new Date(key);
+    	var year = dt.getFullYear();
+    	var month = dt.getMonth() + 1;
+    	var yearMonth = year + "/" + month;
     	if(year===2014){
-        result.push([seconds,commit[key]])
+        result.push([yearMonth,commit[key]])
        }
     }
-    return result
+    return result;
   }
-
 	return {
 		getdateandCommits: getdateandCommits
 	}
@@ -62,13 +61,11 @@ angular.module('githubscout.services', [])
          for(var i =0; i<userarray1.length;i++){
            strip.push(userarray1[i][0])
          }
-
          for(var j = 0; j<userarray2.length; j++){
            if(strip.indexOf(userarray2[j][0])===-1){
               result.push([userarray2[j][0],0])
            }
          }
-
          var concatresult = userarray1.concat(result)
          var finalresult = concatresult.sort(function(a,b){
 
@@ -76,14 +73,11 @@ angular.module('githubscout.services', [])
               return 1;
            }
            if(parseInt((a[0].split('/')[1]))<parseInt((b[0].split('/')[1]))){
-              return -1
-
+              return -1;
            }
-             return 0
+              return 0;
          })
          return finalresult;
-
-
     }
     return {
       getCompareRescaleBar: getCompareRescaleBar
@@ -108,12 +102,7 @@ angular.module('githubscout.services', [])
          }
       }
       for(var key in commit){
-      	   if(commit[key]<=3){
-            result.push({language:key,count:commit[key]+3})
-        }else{
-            result.push({language:key,count:commit[key]})
-
-        }
+         result.push({language:key,count:commit[key]})
       }
       return result;
   }
@@ -133,7 +122,6 @@ angular.module('githubscout.services', [])
     data.push('page='+page);
     data.push('author='+author);
     data.push('per_page=100')
-    //console.log('CURRENT COMMITS',repo.commits_url, page)
     return $http({
       'method': 'GET',
       'url': repo.commits_url+data.join('&')
@@ -145,7 +133,6 @@ angular.module('githubscout.services', [])
           'date':item.commit.committer.date.slice(0,10)
         })
       });
-      //console.log(result.data.length)
       if (result.data.length === 100 && page < 6) {
         return iterativeGetRepoCommits(repo,author,storage,page+1);
       } else {
@@ -156,7 +143,6 @@ angular.module('githubscout.services', [])
 
   var iterativeGetRepoStats = function(remainingRepoData,author,storage) {
     var repo = remainingRepoData.pop();
-   // console.log("CURRENT REPO", repo.full_name)
     var languages = {};
     return $http({
       'method': 'GET',
@@ -203,7 +189,6 @@ angular.module('githubscout.services', [])
       })
     });
   }
-      //console.log("this is getUserCOmmmits", getUserCommits)
   return getUserCommits;
 })
 
@@ -258,10 +243,8 @@ angular.module('githubscout.services', [])
 .factory('ChartsUtil', function($q){
 
   //Since it can take a while for D3 to processs csv files, we use
-
   // $q promises to read the data file and return the results.
   var readDataFile = function(settings){
-    console.log('readDataFile', settings);
 
     // Create a promise object.
     var deferred = $q.defer();
@@ -272,7 +255,6 @@ angular.module('githubscout.services', [])
         console.log('d3 reading error');
         return error;
       }
-      console.log('d3.csv')
       // processLanguageData() converts the data into the correct format for the charts
       // dataDefer.resolve(processLanguageData(settings, data));
       deferred.resolve(data);
@@ -341,7 +323,6 @@ angular.module('githubscout.services', [])
 
 
   var processHorizontalBarData = function(settings, rawData){
-    console.log('processHorizontalBar', settings);
     var chartData =[],
       values =[];
 
@@ -362,9 +343,6 @@ angular.module('githubscout.services', [])
   };
 
   var fetchHorizontalBarData = function(settings){
-    // var deferred = $q.defer();
-
-    console.log('fetchHorizontalBar');
 
     var deferred = $q.defer();
 
@@ -377,7 +355,6 @@ angular.module('githubscout.services', [])
 
 
   var processStackedAreaData = function(settings, rawData){
-    console.log('processStackedAreaData', settings);
 
     var chartData =[],
       values =[];
@@ -393,15 +370,12 @@ angular.module('githubscout.services', [])
       .entries(rawData)
       .map(function(d){
         var group = d.key;
-        // console.log('group', group)
         var values = d.values.map(function(dd){
-          // console.log(dd.date, +dd[settings.countType])
+          
           return  [ Date.parse(dd.date), +dd[settings.countType]];
         });
         return {'key':group, 'values':values};
       });
-
-    console.log(results)
 
     deferred.resolve(results);
 
@@ -409,10 +383,6 @@ angular.module('githubscout.services', [])
   };
 
   var fetchStackedAreaData = function(settings){
-    // var deferred = $q.defer();
-
-    console.log('fetchStackedAreaData');
-
     var deferred = $q.defer();
 
     readDataFile(settings)
@@ -430,10 +400,7 @@ angular.module('githubscout.services', [])
     fetchHorizontalBarData: fetchHorizontalBarData
   };
 
-
 })
-
-
 
 .factory('LanguageData', function() {
   var allLanguages = ["ABAP", "AGS Script", "ANTLR", "APL", "ASP", "ATS", "ActionScript", "Ada", "Agda", "Alloy", "Apex", "AppleScript", "Arc", "Arduino", "AspectJ", "Assembly", "Augeas", "AutoHotkey", "AutoIt", "Awk", "BlitzBasic", "BlitzMax", "Bluespec", "Boo", "Brightscript", "Bro", "C", "C#", "C++", "CLIPS", "COBOL", "CSS", "Ceylon", "Chapel", "Cirru", "Clean", "Clojure", "CoffeeScript", "ColdFusion", "Common Lisp", "Component Pascal", "Coq", "Crystal", "Cuda", "D", "DCPU-16 ASM", "DCPU-16 Assembly", "DM", "DOT", "Dart", "Delphi", "Dogescript", "Dylan", "E", "Ecl", "Eiffel", "Elixir", "Elm", "Emacs Lisp", "EmberScript", "Erlang", "F#", "FLUX", "FORTRAN", "Factor", "Fancy", "Fantom", "Forth", "Frege", "GAMS", "GAP", "Game Maker Language", "Glyph", "Gnuplot", "Go", "Gosu", "Grace", "Grammatical Framework", "Groovy", "HaXe", "Harbour", "Haskell", "Haxe", "Hy", "IDL", "Idris", "Inform 7", "Io", "Ioke", "Isabelle", "J", "JSONiq", "Java", "JavaScript", "Julia", "KRL", "Kotlin", "LabVIEW", "Lasso", "LiveScript", "Logos", "Logtalk", "LookML", "Lua", "M", "Mathematica", "Matlab", "Max", "Max/MSP", "Mercury", "Mirah", "Modelica", "Monkey", "Moocode", "MoonScript", "Nemerle", "NetLogo", "Nimrod", "Nit", "Nix", "Nu", "OCaml", "Objective-C", "Objective-C++", "Objective-J", "Omgrofl", "Opa", "OpenEdge ABL", "OpenSCAD", "Ox", "Oxygene", "PAWN", "PHP", "Pan", "Parrot", "Pascal", "Perl", "Perl6", "PigLatin", "Pike", "PogoScript", "PowerShell", "Powershell", "Processing", "Prolog", "Propeller Spin", "Puppet", "Pure Data", "PureScript", "Python", "R", "REALbasic", "Racket", "Ragel in Ruby Host", "Rebol", "Red", "RobotFramework", "Rouge", "Ruby", "Rust", "SAS", "SQF", "SQL", "Scala", "Scheme", "Scilab", "Self", "Shell", "Shen", "Slash", "Smalltalk", "SourcePawn", "Squirrel", "Standard ML", "Stata", "SuperCollider", "Swift", "SystemVerilog", "TXL", "Tcl", "TeX", "Turing", "TypeScript", "UnrealScript", "VCL", "VHDL", "Vala", "Verilog", "VimL", "Visual Basic", "Volt", "XC", "XML", "XProc", "XQuery", "XSLT", "Xojo", "Xtend", "Zephir", "Zimpl", "eC", "nesC", "ooc", "wisp", "xBase" ];

@@ -20,22 +20,12 @@ userapp.controller('UserController', ['$scope', 'UserData', 'UserSearch', 'UserD
     return UserLanguagesandCommits.getUserCommitsperLanganguage(data)
   }
 
-    $scope.userDateandCommits=$scope.getdateandCommits($scope.userdata.data).reverse()
-    $scope.commitsperLangugageData = $scope.getUserCommitsperLanganguage($scope.userdata.data)
+  $scope.userDateandCommits=$scope.getdateandCommits($scope.userdata.data).reverse()
+  $scope.commitsperLangugageData = $scope.getUserCommitsperLanganguage($scope.userdata.data)
 
    //Data for first user bar chart.
 
-   $scope.commitsbyDateData =
-                        [
-                              {
-                                  "key": UserData.username,
-                                  "values": $scope.userDateandCommits
-                              }
-
-                         ];
-
-
-
+  $scope.commitsbyDateData =[{"key": UserData.username,"values": $scope.userDateandCommits}];
   // Function grabs second user's data from compare user input to compare with first user on same commits over time chart
   $scope.addUser = function() {
     console.log('addUser')
@@ -57,7 +47,6 @@ userapp.controller('UserController', ['$scope', 'UserData', 'UserSearch', 'UserD
         
       })
   }
-
   //Function that allows nvd3 and d3 to access x values from the ‘data’.
   $scope.xFunction = function() {
     return function(d) {

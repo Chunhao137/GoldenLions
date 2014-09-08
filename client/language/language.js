@@ -8,12 +8,8 @@ angular.module('githubscout.language', ['nvd3ChartDirectives',
     $scope.data = {};
     $scope.data.currentLanguages = LanguageData.currentLanguages;
     $scope.data.allLanguages = LanguageData.allLanguages;
-
-    console.log('LanguageController')
     $scope.commits = LanguageData.commits;
-    console.log("commmmmmits", $scope.commits)
     $scope.creates = LanguageData.creates;
-
     $scope.public_repos = LanguageData.public_repos;
     $scope.pushes = LanguageData.pushes;
 
@@ -41,7 +37,6 @@ angular.module('githubscout.language', ['nvd3ChartDirectives',
         $state.transitionTo($state.current, $scope.data.nextLanguage, {
           location: true, reload: true, inherit: true, notify: true
         });
-        // console.log($stateParams);
       });
 
       settings = {
