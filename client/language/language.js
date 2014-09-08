@@ -8,10 +8,23 @@ angular.module('githubscout.language', ['nvd3ChartDirectives',
     $scope.data = {};
     $scope.data.currentLanguages = LanguageData.currentLanguages;
     $scope.data.allLanguages = LanguageData.allLanguages;
+<<<<<<< HEAD
+=======
+    $scope.data.leaderboard = {};
+    $scope.data.leaderboard.repos = LanguageData.leaderboard.repos;
+    $scope.data.leaderboard.users = LanguageData.leaderboard.users;
+
+    console.log('LanguageController')
+>>>>>>> 014e9ae238d2199bb385edb10ad189f63928be06
     $scope.commits = LanguageData.commits;
     $scope.creates = LanguageData.creates;
     $scope.public_repos = LanguageData.public_repos;
     $scope.pushes = LanguageData.pushes;
+
+    $scope.cleanUrl = function(url) {
+      var i = url.lastIndexOf('com/');
+      return url.slice(i+4,url.length);
+    };
 
     // Formats the JavaScript date object for the x axis labels
     $scope.xAxisTickFormat = function(){

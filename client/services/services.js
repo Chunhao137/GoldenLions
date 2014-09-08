@@ -407,6 +407,10 @@ angular.module('githubscout.services', [])
 
   return {
     allLanguages: allLanguages,
-    currentLanguages: []
+    currentLanguages: [],
+    leaderboard: {
+      users: {},
+      repos: {}
+    }
   };
 })
