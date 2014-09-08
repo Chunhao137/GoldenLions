@@ -43,7 +43,7 @@ angular.module('githubscout.language', ['nvd3ChartDirectives',
         });
         // console.log($stateParams);
       });
-      
+
       settings = {
         languages: LanguageData.currentLanguages,
         countType: 'creates',
